@@ -4,6 +4,12 @@ CUSTOMERS = [
       "password": "test",
       "name": "Test Testerson",
       "id": 1
+    },
+    {
+      "email": "graham@chapman.com",
+      "password": "graham",
+      "name": "Graham Chapman",
+      "id": 2
     }
   ]
 
@@ -41,3 +47,13 @@ def create_customer(customer):
 
     # Return the dictionary with `id` property added
     return customer
+
+def delete_customer(id):
+  customer_index = -1
+
+  for i, customer in enumerate(CUSTOMERS):
+    if customer["id"] == id:
+      customer_index = i
+
+  if customer_index >= 0:
+    CUSTOMERS.pop(customer_index)

@@ -43,7 +43,6 @@ CREATE TABLE `Employee` (
 	`address`	TEXT NOT NULL,
 	`location_id` INTEGER NOT NULL,
 	FOREIGN KEY(`location_id`) REFERENCES `Location`(`id`)
-
 );
 
 

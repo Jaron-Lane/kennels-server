@@ -37,6 +37,8 @@ FROM animal a
 WHERE a.id = 4;
 
 
+
+
 CREATE TABLE `Employee` (
 	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`name`	TEXT NOT NULL,
@@ -70,4 +72,5 @@ INSERT INTO `Animal` VALUES (null, "Falafel", "Treatment", "Siamese", 4, 2);
 INSERT INTO `Animal` VALUES (null, "Doodles", "Kennel", "Poodle", 3, 1);
 INSERT INTO `Animal` VALUES (null, "Daps", "Kennel", "Boxer", 2, 2);
 
-
+DELETE FROM Location
+WHERE id >= 3;

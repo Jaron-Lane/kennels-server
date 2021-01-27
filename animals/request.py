@@ -1,6 +1,7 @@
 import sqlite3
 import json
 from models import Animal
+from models import Location
 
 ANIMALS = [
     {
@@ -32,8 +33,6 @@ ANIMALS = [
 def get_all_animals():
     # Open a connection to the database
     with sqlite3.connect("./kennel.db") as conn:
-
-        # Just use these. It's a Black Box.
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
@@ -45,8 +44,12 @@ def get_all_animals():
             a.breed,
             a.status,
             a.location_id,
-            a.customer_id
-        FROM animal a
+            a.customer_id,
+            l.name location_name,
+            l.address location_address
+        FROM Animal a
+        JOIN Location l
+            ON l.id = a.location_id
         """)
 
         # Initialize an empty list to hold all animal representations
@@ -58,34 +61,22 @@ def get_all_animals():
         # Iterate list of data returned from database
         for row in dataset:
 
-            # Create an animal instance from the current row.
-            # Note that the database fields are specified in
-            # exact order of the parameters defined in the
-            # Animal class above.
-            animal = Animal(row['id'], row['name'], row['breed'],
-                            row['status'], row['location_id'],
-                            row['customer_id'])
+            # Create an animal instance from the current row
+            animal = Animal(row['id'], row['name'], row['breed'], row['status'],
+                            row['location_id'], row['customer_id'])
 
+            # Create a Location instance from the current row
+            location = Location(row['location_id'], row['location_name'], row['location_address'])
+
+            # Add the dictionary representation of the location to the animal
+            animal.location = location.__dict__
+
+            # Add the dictionary representation of the animal to the list
             animals.append(animal.__dict__)
 
     # Use `json` package to properly serialize list as JSON
     return json.dumps(animals)
 
-
-# Function with a single parameter
-# def get_single_animal(id):
-#     # Variable to hold the found animal, if it exists
-#     requested_animal = None
-
-#     # Iterate the ANIMALS list above. Very similar to the
-#     # for..of loops you used in JavaScript.
-#     for animal in ANIMALS:
-#         # Dictionaries in Python use [] notation to find a key
-#         # instead of the dot notation that JavaScript used.
-#         if animal["id"] == id:
-#             requested_animal = animal
-
-#     return requested_animal
 
 def get_single_animal(id):
     with sqlite3.connect("./kennel.db") as conn:
